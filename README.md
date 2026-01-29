@@ -1,88 +1,133 @@
-# 📚 Kütüphane Yönetim Sistemi – C Programlama Projesi
+# 📚 Kütüphane Yönetim Sistemi
 
-Bu proje, **C programlama dili** kullanılarak geliştirilen dosya tabanlı bir **kütüphane yönetim sistemidir.**  
-Kullanıcı girişi, kitap listeleme, kitap ödünç alma/iade etme ve rol bazlı yetkilendirme (admin, personel, öğrenci) gibi temel işlevleri destekler.
+Bu proje, **C programlama dili** kullanılarak geliştirilmiş, **dosya tabanlı bir Kütüphane Yönetim Sistemi**dir.  
+Sistem; kitapların takibini, ödünç alma ve iade süreçlerini, kullanıcı yönetimini ve gecikme kontrollerini **kalıcı veri depolama (persistent storage)** yöntemiyle gerçekleştirir.
 
-> Dosya işlemleri, kullanıcı oturumu yönetimi ve rol bazlı yetkilendirme mantığı ile gerçek dünya uygulamalarına yönelik pratik bir örnektir.
-
----
-
-## 🎯 Projenin Amacı
-
-- C dilinde **dosya işlemleri** (file I/O) pratiği yapmak  
-- Kullanıcı rolleri ile **yetki kontrolü** sağlamak  
-- Terminal tabanlı gerçekçi bir sistem tasarımı gerçekleştirmek  
-- Veritabanı kullanılmadan **kalıcı veri yönetimi** gerçekleştirmek  
-- Yazılım mühendisliği portföyü için işlevsel bir uygulama geliştirmek
+Veriler RAM üzerinde geçici olarak tutulmak yerine `.txt` dosyalarında saklanır ve program kapatılsa dahi korunur.
 
 ---
 
-## 🛠️ Kullanılan Teknolojiler
+## 🚀 Proje Hakkında
 
-| Teknoloji | Açıklama |
-|-----------|----------|
-|`Dil`       | C (ANSI C Standardı) |
-| `Platform` | macOS / Linux / Windows (GCC uyumlu) |
-| `Arayüz`    | Komut satırı (CLI) |
-| `Veritabanı`| `users.txt` ve `book.txt` üzerinden metin tabanlı saklama |
+Bu uygulama, gerçek hayattaki bir kütüphane sisteminin temel işleyişini simüle etmek amacıyla geliştirilmiştir.  
+Sistem içerisinde **Admin** ve **Kullanıcı (Öğrenci/Personel)** olmak üzere iki farklı yetki seviyesi bulunmaktadır.
 
----
+### Öne Çıkan Teknik Özellikler
 
-## 📁 Proje Yapısı
-text
-📦 kutuphane-yonetim
-`├──` main.c               # Ana kaynak kodu
-`├──` users.txt            # Kullanıcı verileri
-`├──` book.txt             # Kitap verileri
-`└──` README.md            # Proje dokümantasyonu
+- **Struct Yapıları:** Kitap ve kullanıcı verileri için özel veri yapıları
+- **Dosya İşlemleri (File I/O):** `fopen`, `fscanf`, `fprintf` kullanılarak dosya tabanlı veri yönetimi
+- **Zaman Yönetimi:** `time.h` kütüphanesi ile otomatik teslim tarihi hesaplama
+- **Gecikme Kontrolü:** Süresi geçen kitapların tespit edilmesi
+- **Dinamik Arama:** Kitap adı, yazar veya kategoriye göre (büyük/küçük harf duyarsız) arama
+- **Yetkilendirme:** Rol tabanlı sistem (Admin / Kullanıcı)
 
 ---
 
-## 👤 Kullanıcı Rolleri
+## ⚙️ Özellikler
 
-| Rol        | Yetkiler |
-|------------|----------|
-| `admin`    | Tüm kullanıcıları ve kitapları görüntüleyebilir, yeni kitap ekleyebilir |
-| `personel` | Kitap ödünç alabilir ve iade edebilir |
-| `ogrenci`  | Kitap ödünç alabilir ve iade edebilir |
+Sistem iki ana modülden oluşmaktadır:
+
+### 1️⃣ Admin Modülü
+
+- Sisteme yeni kullanıcı ekleme (öğrenci veya personel)
+- Kütüphaneye kitap ekleme ve silme
+- Teslim tarihi geçen kitapları ve sorumlu kullanıcıları görüntüleme
+- Tüm kitapları ve kullanıcıları detaylı şekilde listeleme
 
 ---
 
-## 🗃️ Veri Formatı
+### 2️⃣ Kullanıcı Modülü
 
-### 🔸 `users.txt` (Kullanıcılar)
+- Kitap arama (isim, yazar veya kategoriye göre)
+- Kitap ödünç alma  
+  - En fazla **3 kitap**
+  - Ödünç süresi **15 gün**
+- Kitap iade etme ve stok durumunu güncelleme
+- Profil görüntüleme:
+  - Üzerindeki kitaplar
+  - Teslim tarihleri
 
-txt
-ID KullanıcıAdı Şifre Rol KitapID1 KitapID2 KitapID3
+---
+
+## 💻 Kurulum ve Çalıştırma
+
+Projeyi çalıştırabilmek için sisteminizde bir **C derleyicisi (GCC)** bulunmalıdır.
+
+### 1️⃣ Projeyi İndirin veya Klonlayın
+	```bash
+	git clone https://github.com/kullaniciadi/kutuphane-yonetim-sistemi.git
+	cd kutuphane-yonetim-sistemi
+
+### 2️⃣ Derleme (Compile)
+	```bash
+	gcc main.c -o kutuphane_sistemi
+	
+### 3️⃣ Çalıştırma (Run)
+	```bash
+	./kutuphane_sistemi      # macOS / Linux
+	kutuphane_sistemi.exe   # Windows
+
+## 📂 Dosya Yapısı ve Veri Formatı
+
+Sistem, veri saklamak için metin dosyalarını kullanır.
+Dosya okuma sırasında hata oluşmaması için metin alanlarındaki boşluklar "_" (alt çizgi) karakteri ile değiştirilmiştir.
+
+### users.txt (Kullanıcı Veritabanı)
+
+Format:
+ID | KullanıcıAdı | Şifre | Rol | Kitap1_ID | Kitap2_ID | Kitap3_ID
+
+Örnek:
+1 admin admin123 admin -1 -1 -1
 2 beyza 12345 ogrenci 3 3 -1
 
-🔸 book.txt (Kitaplar)
-ID KitapAdı Yazar Tür AlındıMı AlanKullanıcıID TeslimTarihi
-3 suç_ve_ceza dostoyevski roman 1 5 08/06/2025
+### books.txt (Kitap Veritabanı)
+
+Format:
+ID | KitapAdı | Yazar | Kategori | Durum(0/1) | AlanKullanıcıID | TeslimTarihi
+
+Örnek:
+3 suc_ve_ceza dostoyevski roman 1 5 08/06/2025
+
+---
+
+## 🔐 Test Giriş Bilgileri
+
+Rol: Admin
+Kullanıcı Adı: admin
+Şifre: admin123
+
+Rol: Öğrenci
+Kullanıcı Adı: beyza
+Şifre: 12345
+
+---
+
+## 🛠 Geliştirme Planları (To-Do)
+
+- Veritabanı entegrasyonu (SQLite veya MySQL)
+- Grafiksel Kullanıcı Arayüzü (GUI)
+- Şifrelerin hashlenerek saklanması (MD5 / SHA-256)
+- Dosya işlemleri için gelişmiş hata yakalama (error handling)
+
+---
+
+## 📝 Lisans
+
+Bu proje MIT Lisansı altında sunulmuştur.
+Eğitim amaçlı geliştirilmiştir.
+
+---
+
+## 👩‍💻 Geliştirici
+
+Beyza  Nur Ulukuş
+Kocaeli Üniversitesi – Yazılım Mühendisliği
 
 
-## 🚀 Derleme ve Çalıştırma
-
-	GCC (Linux/macOS):
-		gcc main.c -o kutuphane
-		./kutuphane
-
-	Windows (MinGW):
-		gcc main.c -o kutuphane.exe
-		kutuphane.exe
 
 
-## ✅ Uygulama Özellikleri
-	•	Giriş sistemi ve kullanıcı doğrulama
-	•	Rol bazlı yetkilendirme
-	•	Kitap listeleme
-	•	Kitap ödünç alma ve iade etme
-	•	Dosya bazlı veri kaydı
-	•	Modüler ve geliştirilebilir kaynak kodu
 
-## 🧠 Kazanımlar
-	•	C dilinde fopen, fscanf, fprintf, feof gibi temel fonksiyonların etkin kullanımı
-	•	Gerçek dünya problemlerinin terminal tabanlı çözümleri
-	•	Kullanıcı oturumu ve sistem yönetimi simülasyonu
-	•	Yapılandırılmış, anlaşılır C kodu geliştirme pratiği
+
+
 
