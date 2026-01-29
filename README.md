@@ -103,15 +103,6 @@ Kullanıcı Adı: beyza
 
 ---
 
-## 🛠 Geliştirme Planları (To-Do)
-
-- Veritabanı entegrasyonu (SQLite veya MySQL)
-- Grafiksel Kullanıcı Arayüzü (GUI)
-- Şifrelerin hashlenerek saklanması (MD5 / SHA-256)
-- Dosya işlemleri için gelişmiş hata yakalama (error handling)
-
----
-
 ## 📝 Lisans
 
 Bu proje MIT Lisansı altında sunulmuştur.
